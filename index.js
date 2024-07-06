@@ -28,6 +28,22 @@ async function run() {
       res.send("Server is running");
     });
 
+    app.get("/user", async (req, res) => {
+      const email = req.query.email;
+      const result = users.findOne({ email: email });
+    });
+
+    app.get("/volunteers", async (req, res) => {
+      const result = await volunteers.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/volunteers/create", async (req, res) => {
+      const volunteerPost = req.body;
+      const result = await volunteers.insertOne(volunteerPost);
+      res.send(result);
+    });
+
     app.post("/users/create", async (req, res) => {
       const user = req.body;
       const result = await users.insertOne(user);
