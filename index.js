@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 app.use(cors());
 app.use(express.json());
@@ -30,11 +30,19 @@ async function run() {
 
     app.get("/user", async (req, res) => {
       const email = req.query.email;
-      const result = users.findOne({ email: email });
+      const result = await users.findOne({ email: email });
+      res.send(result);
     });
 
     app.get("/volunteers", async (req, res) => {
       const result = await volunteers.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/volunteers/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteers.findOne(query);
       res.send(result);
     });
 
