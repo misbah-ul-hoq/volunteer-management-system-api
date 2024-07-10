@@ -23,6 +23,9 @@ async function run() {
   try {
     const volunteers = client.db("volunteersDB").collection("volunteers");
     const users = client.db("volunteersDB").collection("users");
+    const requestedVolunteers = client
+      .db("volunteersDB")
+      .collection("requestedVolunteers");
 
     app.get("/", (req, res) => {
       res.send("Server is running");
@@ -43,6 +46,30 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await volunteers.findOne(query);
+      res.send(result);
+    });
+
+    app.post("/volunteers/request/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const requested = req.body;
+      const result = await requestedVolunteers.insertOne(requested);
+      const decrease = await volunteers.updateOne(query, {
+        $inc: { numberOfVolunteers: -1 },
+      });
+      res.send(result);
+    });
+
+    app.post("/volunteers/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteers.updateOne();
+    });
+
+    app.get("/volunteers/search/:title", async (req, res) => {
+      const title = req.params.title;
+      const query = { postTitle: title };
+      const result = await volunteers.find(query).toArray();
       res.send(result);
     });
 
