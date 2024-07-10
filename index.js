@@ -37,7 +37,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/volunteers/:email", async (req, res) => {
+    app.get("/volunteers/user/:email", async (req, res) => {
       const query = { organizerEmail: req.params.email };
       const result = await volunteers.find(query).toArray();
       res.send(result);
@@ -68,6 +68,7 @@ async function run() {
 
     app.post("/volunteers/update/:id", async (req, res) => {
       const id = req.params.id;
+      const updatedVolunteer = req.body;
       const query = { _id: new ObjectId(id) };
       const result = await volunteers.updateOne();
     });
