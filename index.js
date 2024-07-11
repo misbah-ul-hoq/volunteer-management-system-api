@@ -68,9 +68,10 @@ async function run() {
 
     app.post("/volunteers/update/:id", async (req, res) => {
       const id = req.params.id;
-      const updatedVolunteer = req.body;
-      const query = { _id: new ObjectId(id) };
-      const result = await volunteers.updateOne();
+      const filter = { _id: new ObjectId(id) };
+      const updatedVolunteer = { $set: req.body };
+      const result = await volunteers.updateOne(filter, updatedVolunteer);
+      res.send(result);
     });
 
     app.get("/volunteers/search/:title", async (req, res) => {
