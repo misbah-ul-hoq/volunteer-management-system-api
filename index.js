@@ -74,6 +74,13 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/volunteers/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteers.deleteOne(query);
+      res.send(result);
+    });
+
     app.get("/volunteers/search/:title", async (req, res) => {
       const title = req.params.title;
       const query = { postTitle: title };
