@@ -22,22 +22,6 @@ app.use(
   })
 );
 
-const verifyToken = async (req, res, next) => {
-  const token = req.cookies?.token;
-
-  // console.log(token);
-  if (!token) {
-    return res.status(401).send({ message: "unauthorized access" });
-  }
-  jwt.verify(token, process.env.TOKEN, (error, decoded) => {
-    if (error) {
-      return res.status(403).send({ message: "Unauthorized token" });
-    }
-    req.user = decoded;
-    next();
-  });
-};
-
 const port = process.env.PORT || 3000;
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5dbzkti.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -69,11 +53,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/requests/:email", verifyToken, async (req, res) => {
-      if (req.params.email !== req.user?.email) {
-        return res.status(403).send({ message: "Forbidden access" });
-      }
-
+    app.get("/requests/:email", async (req, res) => {
       const email = req.params.email;
       const result = await requestedVolunteers
         .find({ organizerEmail: email })
