@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: [
@@ -54,6 +57,18 @@ async function run() {
         .find({ organizerEmail: email })
         .toArray();
       res.send(result);
+    });
+
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.TOKEN, { expiresIn: "2h" });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        })
+        .send({ success: true });
     });
 
     app.post("/requests/delete/:id", async (req, res) => {
