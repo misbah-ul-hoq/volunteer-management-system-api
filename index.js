@@ -24,6 +24,7 @@ app.use(
 
 const verifyToken = async (req, res, next) => {
   const token = req.cookies?.token;
+
   // console.log(token);
   if (!token) {
     return res.status(401).send({ message: "unauthorized access" });
@@ -69,7 +70,7 @@ async function run() {
     });
 
     app.get("/requests/:email", verifyToken, async (req, res) => {
-      if (req.query?.email !== req.user?.email) {
+      if (req.params.email !== req.user?.email) {
         return res.status(403).send({ message: "Forbidden access" });
       }
 
@@ -94,8 +95,6 @@ async function run() {
     });
 
     app.post("/logout", async (req, res) => {
-      const user = req.body;
-      console.log("loging out user", user);
       res.clearCookie("token").send({ success: true });
     });
 
