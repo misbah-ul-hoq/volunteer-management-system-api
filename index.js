@@ -7,7 +7,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 app.use(express.json());
+
 app.use(cookieParser());
+
 app.use(
   cors({
     origin: [
@@ -19,6 +21,21 @@ app.use(
     credentials: true,
   })
 );
+
+const verifyToken = async (req, res, next) => {
+  const token = req.cookies?.token;
+  // console.log(token);
+  if (!token) {
+    return res.status(401).send({ message: "unauthorized access" });
+  }
+  jwt.verify(token, process.env.TOKEN, (error, decoded) => {
+    if (error) {
+      return res.status(403).send({ message: "Unauthorized token" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
 
 const port = process.env.PORT || 3000;
 
@@ -51,7 +68,10 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/requests/:email", async (req, res) => {
+    app.get("/requests/:email", verifyToken, async (req, res) => {
+      if (req.query?.email !== req.user?.email) {
+        return res.status(403).send({ message: "Forbidden access" });
+      }
       const email = req.params.email;
       const result = await requestedVolunteers
         .find({ organizerEmail: email })
