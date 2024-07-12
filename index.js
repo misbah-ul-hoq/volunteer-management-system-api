@@ -56,7 +56,7 @@ async function run() {
     app.get("/requests/:email", async (req, res) => {
       const email = req.params.email;
       const result = await requestedVolunteers
-        .find({ organizerEmail: email })
+        .find({ requestEmail: email })
         .toArray();
       res.send(result);
     });
