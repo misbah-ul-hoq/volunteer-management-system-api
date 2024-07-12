@@ -56,9 +56,9 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/requests/delete/:email", async (req, res) => {
-      const email = req.params.email;
-      const query = { organizerEmail: email };
+    app.post("/requests/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
       const result = await requestedVolunteers.deleteOne(query);
       res.send(result);
     });
