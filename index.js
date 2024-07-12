@@ -72,6 +72,7 @@ async function run() {
       if (req.query?.email !== req.user?.email) {
         return res.status(403).send({ message: "Forbidden access" });
       }
+
       const email = req.params.email;
       const result = await requestedVolunteers
         .find({ organizerEmail: email })
@@ -90,6 +91,12 @@ async function run() {
           secure: true,
         })
         .send({ success: true });
+    });
+
+    app.post("/logout", async (req, res) => {
+      const user = req.body;
+      console.log("loging out user", user);
+      res.clearCookie("token").send({ success: true });
     });
 
     app.post("/requests/delete/:id", async (req, res) => {
