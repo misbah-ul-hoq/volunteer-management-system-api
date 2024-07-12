@@ -48,6 +48,21 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/requests/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await requestedVolunteers
+        .find({ organizerEmail: email })
+        .toArray();
+      res.send(result);
+    });
+
+    app.post("/requests/delete/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { organizerEmail: email };
+      const result = await requestedVolunteers.deleteOne(query);
+      res.send(result);
+    });
+
     app.get("/volunteers/user/:email", async (req, res) => {
       const query = { organizerEmail: req.params.email };
       const result = await volunteers.find(query).toArray();
