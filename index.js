@@ -131,7 +131,7 @@ async function run() {
 
     app.get("/volunteers/search/:title", async (req, res) => {
       const title = req.params.title;
-      const query = { postTitle: title };
+      const query = { postTitle: { $regex: title, $options: "i" } };
       const result = await volunteers.find(query).toArray();
       res.send(result);
     });
