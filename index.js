@@ -8,7 +8,7 @@ app.use(
       "https://volunteers-management-system.web.app",
       "https://volunteer-management-system-three.vercel.app",
     ],
-    credentials: true,
+    //credentials: true,
   })
 const app = express();
 const jwt = require("jsonwebtoken");
