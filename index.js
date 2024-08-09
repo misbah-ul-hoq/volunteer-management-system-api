@@ -6,17 +6,19 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://volunteers-management-system.firebaseapp.com",
-      "https://volunteers-management-system.web.app",
-      "https://volunteer-management-system-three.vercel.app",
-    ],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://volunteers-management-system.firebaseapp.com",
+//       "https://volunteers-management-system.web.app",
+//       "https://volunteer-management-system-three.vercel.app",
+//     ],
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
 
 app.use(express.json());
 
