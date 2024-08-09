@@ -6,27 +6,19 @@ const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:5173",
-//       "https://volunteers-management-system.firebaseapp.com",
-//       "https://volunteers-management-system.web.app",
-//       "https://volunteer-management-system-three.vercel.app",
-//     ],
-//     credentials: true,
-//   })
-// );
-// app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://volunteers-management-system.firebaseapp.com",
+      "https://volunteers-management-system.web.app",
+      "https://volunteer-management-system-three.vercel.app",
+    ],
+    credentials: true,
+  })
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+
+
 
 
 app.use(express.json());
