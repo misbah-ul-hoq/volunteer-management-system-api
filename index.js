@@ -6,21 +6,23 @@ const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
-app.use(express.json());
-
-app.use(cookieParser());
-
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "https://volunteers-management-system.firebaseapp.com",
-      "https://volunteers-management-system.web.app	",
+      "https://volunteers-management-system.web.app",
       "https://volunteer-management-system-three.vercel.app",
     ],
     credentials: true,
   })
 );
+
+app.use(express.json());
+
+app.use(cookieParser());
+
+
 
 const port = process.env.PORT || 3000;
 
